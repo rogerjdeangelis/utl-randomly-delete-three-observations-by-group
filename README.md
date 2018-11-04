@@ -1,6 +1,19 @@
 # utl-randomly-delete-three-observations-by-group
 Randomly delete three observations by group 
-    Randomly delete three observations by group                                               
+
+    Randomly delete three observations by group  
+    
+    Recent solutions
+    Superior and useful methods by Mark and Paul on end                               
+                                                                                      
+    Nice use of ranui                                                                 
+                                                                                      
+    Paul Dorfman                                                                      
+    sashole@bellsouth.net                                                             
+                                                                                      
+    Mark Keintz                                                                       
+    mkeintz@wharton.upenn.edu                                                         
+                           
                                                                                               
       Two Solutions                                                                           
                                                                                               
@@ -146,4 +159,64 @@ Randomly delete three observations by group
           output;                                                                             
           end;                                                                                
     end;                                                                                      
-    run;                                                                                      
+    run;         
+    
+    
+        *____                ___     __  __            _                                  
+    |  _ \ __ _ _   _   ( _ )   |  \/  | __ _ _ __| | __                              
+    | |_) / _` | | | |  / _ \/\ | |\/| |/ _` | '__| |/ /                              
+    |  __/ (_| | |_| | | (_>  < | |  | | (_| | |  |   <                               
+    |_|   \__,_|\__,_|  \___/\/ |_|  |_|\__,_|_|  |_|\_\                              
+                                                                                      
+    ;                                                                                 
+                                                                                      
+                                                                                      
+    Superior and useful methods by Mark and Paul on end                               
+                                                                                      
+    Nice use of ranui                                                                 
+                                                                                      
+    Paul Dorfman                                                                      
+    sashole@bellsouth.net                                                             
+                                                                                      
+    Mark Keintz                                                                       
+    mkeintz@wharton.upenn.edu                                                         
+                                                                                      
+                                                                                      
+    Mark,                                                                             
+                                                                                      
+    Thanks! Quite intricate - and very good from the didactic standpoint              
+    of illustrating the capabilities of the hash object.                              
+                                                                                      
+    However, I dare say that its dynamic prowess can be exploited from a              
+    different angle to deliver a much simpler solution in case the input is           
+    unsorted and we want to preserve the original record sequence.                    
+    It requires but a single hash table keyed by ID and with the (K,N)                
+    pair as data, the latter being updated using the classic K/N scheme in            
+    place during the second pass through the f                                        
+    ile:                                                                              
+                                                                                      
+    data want (drop = K N) ;                                                          
+      if _n_ = 1 then do ;                                                            
+        dcl hash h (ordered:"A") ;                                                    
+        h.definekey  ("ID") ;                                                         
+        h.definedata ("N", "K") ;                                                     
+        h.definedone () ;                                                             
+        do K = 3 by 0 until (z) ;                                                     
+          set have end = z ;                                                          
+          if h.find() ne 0 then N = 1 ;                                               
+          else                  N + 1 ;                                               
+          h.replace() ;                                                               
+        end ;                                                                         
+        h.output (dataset:"H") ;                                                      
+      end ;                                                                           
+      set have ;                                                                      
+      h.find() ;                                                                      
+      if ranuni (1) < divide (K, N) then do ;                                         
+        NEW_PREP = . ;                                                                
+        K +- 1 ;                                                                      
+      end ;                                                                           
+      else NEW_PREP = PREP ;                                                          
+      N +- 1 ;                                                                        
+      h.replace() ;                                                                   
+    run ;                                                                             
+
